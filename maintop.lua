@@ -864,3 +864,7 @@ function Library:CreateWindow(options)
 
     return Window
 end
+
+-- Add this line at the very end of your maintop.lua file (after line 868)
+
+return Library
