@@ -323,3 +323,4 @@ UserInputService.InputEnded:Connect(function(input)
     end
 end)
 
+return Library
