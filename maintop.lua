@@ -1255,3 +1255,5 @@ TweenService:Create(MainFrame, Config.Animations.Bounce, {
     Size = UDim2.new(0, 450, 0, 300),
     Position = UDim2.new(0.5, -225, 0.5, -150)
 }):Play()
+
+return Library
