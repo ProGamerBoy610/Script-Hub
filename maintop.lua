@@ -1,4 +1,4 @@
--- MY HUB
+a-- MY HUB
 
 
 -- Modern Hub GUI for Roblox Executor (Updated with Fixed Dropdown System)
@@ -102,7 +102,7 @@ TitleLabel.BackgroundTransparency = 1
 TitleLabel.Size = UDim2.new(1, -80, 0, 20)
 TitleLabel.Position = UDim2.new(0, 10, 0, 2)
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.Text = "MODERN HUB"
+TitleLabel.Text = "Fryzer HUB"
 TitleLabel.TextColor3 = Config.Colors.Text
 TitleLabel.TextSize = 14
 TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -115,7 +115,7 @@ SubtitleLabel.BackgroundTransparency = 1
 SubtitleLabel.Size = UDim2.new(1, -80, 0, 12)
 SubtitleLabel.Position = UDim2.new(0, 10, 0, 22)
 SubtitleLabel.Font = Enum.Font.Gotham
-SubtitleLabel.Text = "Advanced Script Hub"
+SubtitleLabel.Text = "FH"
 SubtitleLabel.TextColor3 = Config.Colors.TextSecondary
 SubtitleLabel.TextSize = 10
 SubtitleLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -356,7 +356,7 @@ function Library:CreateButton(tab, text, callback)
     -- Add green stroke
     local ButtonStroke = Instance.new("UIStroke")
     ButtonStroke.Color = Config.Colors.StrokeGreen
-    ButtonStroke.Thickness = 1
+    ButtonStroke.Thickness = 0.50
     ButtonStroke.Parent = Button
     
     -- Status indicator
