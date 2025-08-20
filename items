@@ -1,3 +1,5 @@
+-- THIS WILL NOT WORK CUZ I USE NEW HUB
+
 -- Create the window and tabs with content
 local window = Library:CreateWindow({Title = "GROW A GARDEN V3.87"})
 
