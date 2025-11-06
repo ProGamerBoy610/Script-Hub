@@ -1477,11 +1477,14 @@ local function CreateConfirmDialog()
     end)
    
     ConfirmButton.MouseButton1Click:Connect(function()
-        ScreenGui:Destroy()
+    ScreenGui:Destroy()
+    ConfirmGui:Destroy()
+    -- Also destroy the toggle circle when closing the hub
+    if ToggleScreenGui and ToggleScreenGui.Parent then
         ToggleScreenGui:Destroy()
-        ConfirmGui:Destroy()
-    end)
-   
+    end
+end)
+
     CancelButton.MouseEnter:Connect(function()
         TweenService:Create(CancelButton, Config.Animations.Fast, {BackgroundColor3 = Config.Colors.Secondary}):Play()
     end)
@@ -1505,6 +1508,7 @@ TweenService:Create(MainFrame, Config.Animations.Bounce, {
     Size = UDim2.new(0, 520, 0, 360),
     Position = UDim2.new(0.5, -260, 0.5, -180)
 }):Play()
+
 
 -- Floating Toggle Circle Integration
 -- Remove existing FryzerToggleGUI if it exists
