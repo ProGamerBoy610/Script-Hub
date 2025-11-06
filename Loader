@@ -1477,14 +1477,11 @@ local function CreateConfirmDialog()
     end)
    
     ConfirmButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
-    ConfirmGui:Destroy()
-    -- Also destroy the toggle circle when closing the hub
-    if ToggleScreenGui and ToggleScreenGui.Parent then
-        ToggleScreenGui:Destroy()
-    end
-end)
-
+        ScreenGui:Destroy()
+        ConfirmGui:Destroy()
+        FryzerToggleGUI:Destroy()
+    end)
+   
     CancelButton.MouseEnter:Connect(function()
         TweenService:Create(CancelButton, Config.Animations.Fast, {BackgroundColor3 = Config.Colors.Secondary}):Play()
     end)
