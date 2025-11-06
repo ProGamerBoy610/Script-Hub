@@ -1478,6 +1478,7 @@ local function CreateConfirmDialog()
    
     ConfirmButton.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
+        ToggleScreenGui:Destroy()
         ConfirmGui:Destroy()
     end)
    
