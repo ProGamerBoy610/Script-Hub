@@ -58,7 +58,7 @@ DropdownOverlay.InputBegan:Connect(function(input)
             local dropdown = Library.OpenDropdowns[i]
             if dropdown and dropdown.Parent then
                 dropdown.Visible = false
-               
+              
                 local valueButton = dropdown.Parent:FindFirstChild("ValueButton")
                 if valueButton then
                     local arrow = valueButton:FindFirstChild("Arrow")
@@ -75,7 +75,7 @@ end)
 spawn(function()
     while ScreenGui.Parent do
         wait(0.5)
-       
+      
         local shouldHideOverlay = true
         for _, dropdown in pairs(Library.OpenDropdowns) do
             if dropdown and dropdown.Parent and dropdown.Visible then
@@ -83,7 +83,7 @@ spawn(function()
                 break
             end
         end
-       
+      
         if shouldHideOverlay and DropdownOverlay.Visible then
             DropdownOverlay.Visible = false
         end
@@ -259,7 +259,7 @@ function Library:CreateTab(name, locked)
     Tab.Name = name
     Tab.Components = {}
     Tab.Locked = locked or false
-   
+  
     local TabButton = Instance.new("TextButton")
     TabButton.Name = name
     TabButton.Parent = TabScrollFrame
@@ -272,11 +272,11 @@ function Library:CreateTab(name, locked)
     TabButton.TextSize = 12
     TabButton.TextXAlignment = Enum.TextXAlignment.Center
     TabButton.AutoButtonColor = false
-   
+  
     local TabCorner = Instance.new("UICorner")
     TabCorner.CornerRadius = UDim.new(0, 6)
     TabCorner.Parent = TabButton
-   
+  
     local TabContent = Instance.new("Frame")
     TabContent.Name = name .. "Content"
     TabContent.Parent = ContentScrollFrame
@@ -284,23 +284,23 @@ function Library:CreateTab(name, locked)
     TabContent.Size = UDim2.new(1, 0, 0, 0)
     TabContent.Visible = false
     TabContent.LayoutOrder = #Library.Tabs + 1
-   
+  
     local TabContentLayout = Instance.new("UIListLayout")
     TabContentLayout.Parent = TabContent
     TabContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
     TabContentLayout.Padding = UDim.new(0, 6)
-   
+  
     TabContentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         TabContent.Size = UDim2.new(1, 0, 0, TabContentLayout.AbsoluteContentSize.Y)
         ContentScrollFrame.CanvasSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + 20)
     end)
-   
+  
     TabButton.MouseButton1Click:Connect(function()
         if not Tab.Locked then
             Library:SelectTab(Tab)
         end
     end)
-   
+  
     TabButton.MouseEnter:Connect(function()
         if Library.CurrentTab ~= Tab and not Tab.Locked then
             TweenService:Create(TabButton, Config.Animations.Fast, {
@@ -308,7 +308,7 @@ function Library:CreateTab(name, locked)
             }):Play()
         end
     end)
-   
+  
     TabButton.MouseLeave:Connect(function()
         if Library.CurrentTab ~= Tab then
             TweenService:Create(TabButton, Config.Animations.Fast, {
@@ -316,19 +316,19 @@ function Library:CreateTab(name, locked)
             }):Play()
         end
     end)
-   
+  
     Tab.Button = TabButton
     Tab.Content = TabContent
     Tab.Layout = TabContentLayout
-   
+  
     table.insert(Library.Tabs, Tab)
-   
+  
     if #Library.Tabs == 1 then
         Library:SelectTab(Tab)
     end
-   
+  
     TabScrollFrame.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
-   
+  
     return Tab
 end
 function Library:SelectTab(tab)
@@ -339,21 +339,21 @@ function Library:SelectTab(tab)
         }):Play()
         Library.CurrentTab.Content.Visible = false
     end
-   
+  
     for _, dropdown in pairs(Library.OpenDropdowns) do
         if dropdown and dropdown.Parent then
             dropdown:Destroy()
         end
     end
     Library.OpenDropdowns = {}
-   
+  
     Library.CurrentTab = tab
     TweenService:Create(tab.Button, Config.Animations.Normal, {
         BackgroundColor3 = Config.Colors.Secondary,
         TextColor3 = Config.Colors.White
     }):Play()
     tab.Content.Visible = true
-   
+  
     ContentScrollFrame.CanvasSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + 20)
 end
 function Library:CreateSection(tab, title)
@@ -363,7 +363,7 @@ function Library:CreateSection(tab, title)
     SectionFrame.BackgroundTransparency = 1
     SectionFrame.Size = UDim2.new(1, 0, 0, 30)
     SectionFrame.LayoutOrder = #tab.Components + 1
-   
+  
     local SectionLabel = Instance.new("TextLabel")
     SectionLabel.Parent = SectionFrame
     SectionLabel.BackgroundTransparency = 1
@@ -373,7 +373,7 @@ function Library:CreateSection(tab, title)
     SectionLabel.TextColor3 = Config.Colors.White
     SectionLabel.TextSize = 13
     SectionLabel.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     table.insert(tab.Components, SectionFrame)
     return SectionFrame
 end
@@ -385,7 +385,7 @@ function Library:CreateDivider(tab)
     DividerFrame.BorderSizePixel = 0
     DividerFrame.Size = UDim2.new(1, 0, 0, 1)
     DividerFrame.LayoutOrder = #tab.Components + 1
-   
+  
     table.insert(tab.Components, DividerFrame)
     return DividerFrame
 end
@@ -396,7 +396,7 @@ function Library:CreateSpace(tab, height)
     SpaceFrame.BackgroundTransparency = 1
     SpaceFrame.Size = UDim2.new(1, 0, 0, height or 8)
     SpaceFrame.LayoutOrder = #tab.Components + 1
-   
+  
     table.insert(tab.Components, SpaceFrame)
     return SpaceFrame
 end
@@ -408,23 +408,23 @@ function Library:CreateButton(tab, config)
     ButtonFrame.BorderSizePixel = 0
     ButtonFrame.Size = UDim2.new(1, 0, 0, config.Desc and 55 or 40)
     ButtonFrame.LayoutOrder = #tab.Components + 1
-   
+  
     local ButtonCorner = Instance.new("UICorner")
     ButtonCorner.CornerRadius = UDim.new(0, 6)
     ButtonCorner.Parent = ButtonFrame
-   
+  
     local ButtonStroke = Instance.new("UIStroke")
     ButtonStroke.Color = Config.Colors.Border
     ButtonStroke.Thickness = 1
     ButtonStroke.Parent = ButtonFrame
-   
+  
     local Button = Instance.new("TextButton")
     Button.Parent = ButtonFrame
     Button.BackgroundTransparency = 1
     Button.Size = UDim2.new(1, 0, 1, 0)
     Button.Text = ""
     Button.AutoButtonColor = false
-   
+  
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Parent = ButtonFrame
     TitleLabel.BackgroundTransparency = 1
@@ -435,7 +435,7 @@ function Library:CreateButton(tab, config)
     TitleLabel.TextColor3 = Config.Colors.White
     TitleLabel.TextSize = 12
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     if config.Desc then
         local DescLabel = Instance.new("TextLabel")
         DescLabel.Parent = ButtonFrame
@@ -448,35 +448,35 @@ function Library:CreateButton(tab, config)
         DescLabel.TextSize = 10
         DescLabel.TextXAlignment = Enum.TextXAlignment.Left
     end
-   
+  
     local StatusDot = Instance.new("Frame")
     StatusDot.Parent = ButtonFrame
     StatusDot.BackgroundColor3 = Config.Colors.Border
     StatusDot.BorderSizePixel = 0
     StatusDot.Size = UDim2.new(0, 8, 0, 8)
     StatusDot.Position = UDim2.new(1, -18, 0.5, -4)
-   
+  
     local DotCorner = Instance.new("UICorner")
     DotCorner.CornerRadius = UDim.new(1, 0)
     DotCorner.Parent = StatusDot
-   
+  
     Button.MouseButton1Click:Connect(function()
         TweenService:Create(StatusDot, Config.Animations.Fast, {
             BackgroundColor3 = Config.Colors.Success,
             Size = UDim2.new(0, 12, 0, 12)
         }):Play()
-       
+      
         if config.Callback then
             config.Callback()
         end
-       
+      
         wait(0.5)
         TweenService:Create(StatusDot, Config.Animations.Normal, {
             BackgroundColor3 = Config.Colors.Border,
             Size = UDim2.new(0, 8, 0, 8)
         }):Play()
     end)
-   
+  
     Button.MouseEnter:Connect(function()
         TweenService:Create(ButtonFrame, Config.Animations.Fast, {
             BackgroundColor3 = Config.Colors.Secondary
@@ -485,7 +485,7 @@ function Library:CreateButton(tab, config)
             Color = Config.Colors.Purple
         }):Play()
     end)
-   
+  
     Button.MouseLeave:Connect(function()
         TweenService:Create(ButtonFrame, Config.Animations.Fast, {
             BackgroundColor3 = Config.Colors.Tertiary
@@ -494,7 +494,7 @@ function Library:CreateButton(tab, config)
             Color = Config.Colors.Border
         }):Play()
     end)
-   
+  
     table.insert(tab.Components, ButtonFrame)
     return ButtonFrame
 end
@@ -506,22 +506,22 @@ function Library:CreateToggle(tab, config)
     ToggleFrame.BorderSizePixel = 0
     ToggleFrame.Size = UDim2.new(1, 0, 0, config.Desc and 55 or 40)
     ToggleFrame.LayoutOrder = #tab.Components + 1
-   
+  
     local ToggleCorner = Instance.new("UICorner")
     ToggleCorner.CornerRadius = UDim.new(0, 6)
     ToggleCorner.Parent = ToggleFrame
-   
+  
     local ToggleStroke = Instance.new("UIStroke")
     ToggleStroke.Color = Config.Colors.Border
     ToggleStroke.Thickness = 1
     ToggleStroke.Parent = ToggleFrame
-   
+  
     local ToggleButton = Instance.new("TextButton")
     ToggleButton.Parent = ToggleFrame
     ToggleButton.BackgroundTransparency = 1
     ToggleButton.Size = UDim2.new(1, 0, 1, 0)
     ToggleButton.Text = ""
-   
+  
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Parent = ToggleFrame
     TitleLabel.BackgroundTransparency = 1
@@ -532,7 +532,7 @@ function Library:CreateToggle(tab, config)
     TitleLabel.TextColor3 = Config.Colors.White
     TitleLabel.TextSize = 12
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     if config.Desc then
         local DescLabel = Instance.new("TextLabel")
         DescLabel.Parent = ToggleFrame
@@ -545,23 +545,23 @@ function Library:CreateToggle(tab, config)
         DescLabel.TextSize = 10
         DescLabel.TextXAlignment = Enum.TextXAlignment.Left
     end
-   
+  
     local CheckboxBg = Instance.new("Frame")
     CheckboxBg.Parent = ToggleFrame
     CheckboxBg.BackgroundColor3 = Config.Colors.Secondary
     CheckboxBg.BorderSizePixel = 0
     CheckboxBg.Size = UDim2.new(0, 18, 0, 18)
     CheckboxBg.Position = UDim2.new(1, -26, 0.5, -9)
-   
+  
     local CheckboxCorner = Instance.new("UICorner")
     CheckboxCorner.CornerRadius = UDim.new(0, 4)
     CheckboxCorner.Parent = CheckboxBg
-   
+  
     local CheckboxStroke = Instance.new("UIStroke")
     CheckboxStroke.Color = Config.Colors.Border
     CheckboxStroke.Thickness = 1
     CheckboxStroke.Parent = CheckboxBg
-   
+  
     local Checkmark = Instance.new("TextLabel")
     Checkmark.Parent = CheckboxBg
     Checkmark.BackgroundTransparency = 1
@@ -571,37 +571,37 @@ function Library:CreateToggle(tab, config)
     Checkmark.TextColor3 = Config.Colors.White
     Checkmark.TextSize = 14
     Checkmark.Visible = config.Default or false
-   
+  
     local isToggled = config.Default or false
-   
+  
     ToggleButton.MouseButton1Click:Connect(function()
         isToggled = not isToggled
         Checkmark.Visible = isToggled
-       
+      
         TweenService:Create(CheckboxBg, Config.Animations.Normal, {
             BackgroundColor3 = isToggled and Config.Colors.Purple or Config.Colors.Secondary
         }):Play()
         TweenService:Create(CheckboxStroke, Config.Animations.Normal, {
             Color = isToggled and Config.Colors.Purple or Config.Colors.Border
         }):Play()
-       
+      
         if config.Callback then
             config.Callback(isToggled)
         end
     end)
-   
+  
     ToggleButton.MouseEnter:Connect(function()
         TweenService:Create(ToggleFrame, Config.Animations.Fast, {
             BackgroundColor3 = Config.Colors.Secondary
         }):Play()
     end)
-   
+  
     ToggleButton.MouseLeave:Connect(function()
         TweenService:Create(ToggleFrame, Config.Animations.Fast, {
             BackgroundColor3 = Config.Colors.Tertiary
         }):Play()
     end)
-   
+  
     table.insert(tab.Components, ToggleFrame)
     return {Frame = ToggleFrame, SetValue = function(val) isToggled = val Checkmark.Visible = val end}
 end
@@ -613,16 +613,16 @@ function Library:CreateDropdown(tab, config)
     DropdownFrame.BorderSizePixel = 0
     DropdownFrame.Size = UDim2.new(1, 0, 0, 60)
     DropdownFrame.LayoutOrder = #tab.Components + 1
-   
+  
     local DropdownCorner = Instance.new("UICorner")
     DropdownCorner.CornerRadius = UDim.new(0, 6)
     DropdownCorner.Parent = DropdownFrame
-   
+  
     local DropdownStroke = Instance.new("UIStroke")
     DropdownStroke.Color = Config.Colors.Border
     DropdownStroke.Thickness = 1
     DropdownStroke.Parent = DropdownFrame
-   
+  
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Parent = DropdownFrame
     TitleLabel.BackgroundTransparency = 1
@@ -633,7 +633,7 @@ function Library:CreateDropdown(tab, config)
     TitleLabel.TextColor3 = Config.Colors.White
     TitleLabel.TextSize = 11
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     local ValueButton = Instance.new("TextButton")
     ValueButton.Parent = DropdownFrame
     ValueButton.BackgroundColor3 = Config.Colors.Secondary
@@ -645,16 +645,16 @@ function Library:CreateDropdown(tab, config)
     ValueButton.TextColor3 = Config.Colors.White
     ValueButton.TextSize = 10
     ValueButton.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     local ValueCorner = Instance.new("UICorner")
     ValueCorner.CornerRadius = UDim.new(0, 4)
     ValueCorner.Parent = ValueButton
-   
+  
     local ValuePadding = Instance.new("UIPadding")
     ValuePadding.Parent = ValueButton
     ValuePadding.PaddingLeft = UDim.new(0, 8)
     ValuePadding.PaddingRight = UDim.new(0, 24)
-   
+  
     local Arrow = Instance.new("TextLabel")
     Arrow.Parent = ValueButton
     Arrow.BackgroundTransparency = 1
@@ -664,7 +664,7 @@ function Library:CreateDropdown(tab, config)
     Arrow.Text = "v"
     Arrow.TextColor3 = Config.Colors.WhiteDim
     Arrow.TextSize = 8
-   
+  
     local OptionsFrame = Instance.new("Frame")
     OptionsFrame.Name = "Options"
     OptionsFrame.Parent = ScreenGui
@@ -674,16 +674,16 @@ function Library:CreateDropdown(tab, config)
     OptionsFrame.Visible = false
     OptionsFrame.ZIndex = 200
     OptionsFrame.ClipsDescendants = true
-   
+  
     local OptionsCorner = Instance.new("UICorner")
     OptionsCorner.CornerRadius = UDim.new(0, 6)
     OptionsCorner.Parent = OptionsFrame
-   
+  
     local OptionsStroke = Instance.new("UIStroke")
     OptionsStroke.Color = Config.Colors.Purple
     OptionsStroke.Thickness = 1
     OptionsStroke.Parent = OptionsFrame
-   
+  
     local OptionsScroll = Instance.new("ScrollingFrame")
     OptionsScroll.Parent = OptionsFrame
     OptionsScroll.BackgroundTransparency = 1
@@ -693,14 +693,14 @@ function Library:CreateDropdown(tab, config)
     OptionsScroll.ScrollBarImageColor3 = Config.Colors.Purple
     OptionsScroll.BorderSizePixel = 0
     OptionsScroll.CanvasSize = UDim2.new(0, 0, 0, #config.Values * 28)
-   
+  
     local OptionsLayout = Instance.new("UIListLayout")
     OptionsLayout.Parent = OptionsScroll
     OptionsLayout.Padding = UDim.new(0, 2)
-   
+  
     local currentValue = config.Value or config.Values[1]
     local isOpen = false
-   
+  
     for _, option in pairs(config.Values) do
         local OptionButton = Instance.new("TextButton")
         OptionButton.Parent = OptionsScroll
@@ -712,50 +712,50 @@ function Library:CreateDropdown(tab, config)
         OptionButton.TextColor3 = Config.Colors.White
         OptionButton.TextSize = 10
         OptionButton.TextXAlignment = Enum.TextXAlignment.Left
-       
+      
         local OptCorner = Instance.new("UICorner")
         OptCorner.CornerRadius = UDim.new(0, 4)
         OptCorner.Parent = OptionButton
-       
+      
         local OptPadding = Instance.new("UIPadding")
         OptPadding.Parent = OptionButton
         OptPadding.PaddingLeft = UDim.new(0, 8)
-       
+      
         OptionButton.MouseButton1Click:Connect(function()
             currentValue = option
             ValueButton.Text = option
             OptionsFrame.Visible = false
             isOpen = false
             Arrow.Text = "v"
-           
+          
             for i, dropdown in pairs(Library.OpenDropdowns) do
                 if dropdown == OptionsFrame then
                     table.remove(Library.OpenDropdowns, i)
                     break
                 end
             end
-           
+          
             if config.Callback then
                 config.Callback(option)
             end
         end)
-       
+      
         OptionButton.MouseEnter:Connect(function()
             TweenService:Create(OptionButton, Config.Animations.Fast, {
                 BackgroundColor3 = Config.Colors.Secondary
             }):Play()
         end)
-       
+      
         OptionButton.MouseLeave:Connect(function()
             TweenService:Create(OptionButton, Config.Animations.Fast, {
                 BackgroundColor3 = Config.Colors.Tertiary
             }):Play()
         end)
     end
-   
+  
     ValueButton.MouseButton1Click:Connect(function()
         isOpen = not isOpen
-       
+      
         if isOpen then
             for i = #Library.OpenDropdowns, 1, -1 do
                 if Library.OpenDropdowns[i] ~= OptionsFrame then
@@ -763,25 +763,25 @@ function Library:CreateDropdown(tab, config)
                     table.remove(Library.OpenDropdowns, i)
                 end
             end
-           
+          
             OptionsFrame.Visible = true
             Arrow.Text = "^"
             DropdownOverlay.Visible = true
             DropdownOverlay.ZIndex = 149
             OptionsFrame.ZIndex = 151
-           
+          
             local pos = ValueButton.AbsolutePosition
             local screenSize = ScreenGui.AbsoluteSize.Y
             local maxHeight = 150
             local availableSpaceBelow = screenSize - (pos.Y + ValueButton.AbsoluteSize.Y)
-           
+          
             local yPos
             if availableSpaceBelow >= maxHeight then
                 yPos = pos.Y + ValueButton.AbsoluteSize.Y + 5
             else
                 yPos = pos.Y - maxHeight - 5
             end
-           
+          
             OptionsFrame.Position = UDim2.new(0, pos.X, 0, yPos)
             OptionsFrame.Size = UDim2.new(0, ValueButton.AbsoluteSize.X, 0, 0)
             TweenService:Create(OptionsFrame, Config.Animations.Normal, {
@@ -801,7 +801,7 @@ function Library:CreateDropdown(tab, config)
             end
         end
     end)
-   
+  
     DropdownFrame.InputBegan:Connect(function(input)
         if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and isOpen then
             wait(0.1)
@@ -816,7 +816,7 @@ function Library:CreateDropdown(tab, config)
             end
         end
     end)
-   
+  
     table.insert(tab.Components, DropdownFrame)
     return {Frame = DropdownFrame, SetValue = function(val) currentValue = val ValueButton.Text = val end}
 end
@@ -828,16 +828,16 @@ function Library:CreateMultiDropdown(tab, config)
     DropdownFrame.BorderSizePixel = 0
     DropdownFrame.Size = UDim2.new(1, 0, 0, 60)
     DropdownFrame.LayoutOrder = #tab.Components + 1
-   
+  
     local DropdownCorner = Instance.new("UICorner")
     DropdownCorner.CornerRadius = UDim.new(0, 6)
     DropdownCorner.Parent = DropdownFrame
-   
+  
     local DropdownStroke = Instance.new("UIStroke")
     DropdownStroke.Color = Config.Colors.Border
     DropdownStroke.Thickness = 1
     DropdownStroke.Parent = DropdownFrame
-   
+  
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Parent = DropdownFrame
     TitleLabel.BackgroundTransparency = 1
@@ -848,7 +848,7 @@ function Library:CreateMultiDropdown(tab, config)
     TitleLabel.TextColor3 = Config.Colors.White
     TitleLabel.TextSize = 11
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     local ValueButton = Instance.new("TextButton")
     ValueButton.Parent = DropdownFrame
     ValueButton.BackgroundColor3 = Config.Colors.Secondary
@@ -860,16 +860,16 @@ function Library:CreateMultiDropdown(tab, config)
     ValueButton.TextColor3 = Config.Colors.White
     ValueButton.TextSize = 10
     ValueButton.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     local ValueCorner = Instance.new("UICorner")
     ValueCorner.CornerRadius = UDim.new(0, 4)
     ValueCorner.Parent = ValueButton
-   
+  
     local ValuePadding = Instance.new("UIPadding")
     ValuePadding.Parent = ValueButton
     ValuePadding.PaddingLeft = UDim.new(0, 8)
     ValuePadding.PaddingRight = UDim.new(0, 24)
-   
+  
     local Arrow = Instance.new("TextLabel")
     Arrow.Parent = ValueButton
     Arrow.BackgroundTransparency = 1
@@ -879,7 +879,7 @@ function Library:CreateMultiDropdown(tab, config)
     Arrow.Text = "v"
     Arrow.TextColor3 = Config.Colors.WhiteDim
     Arrow.TextSize = 8
-   
+  
     local OptionsFrame = Instance.new("Frame")
     OptionsFrame.Name = "Options"
     OptionsFrame.Parent = ScreenGui
@@ -889,16 +889,16 @@ function Library:CreateMultiDropdown(tab, config)
     OptionsFrame.Visible = false
     OptionsFrame.ZIndex = 200
     OptionsFrame.ClipsDescendants = true
-   
+  
     local OptionsCorner = Instance.new("UICorner")
     OptionsCorner.CornerRadius = UDim.new(0, 6)
     OptionsCorner.Parent = OptionsFrame
-   
+  
     local OptionsStroke = Instance.new("UIStroke")
     OptionsStroke.Color = Config.Colors.Purple
     OptionsStroke.Thickness = 1
     OptionsStroke.Parent = OptionsFrame
-   
+  
     local OptionsScroll = Instance.new("ScrollingFrame")
     OptionsScroll.Parent = OptionsFrame
     OptionsScroll.BackgroundTransparency = 1
@@ -908,14 +908,14 @@ function Library:CreateMultiDropdown(tab, config)
     OptionsScroll.ScrollBarImageColor3 = Config.Colors.Purple
     OptionsScroll.BorderSizePixel = 0
     OptionsScroll.CanvasSize = UDim2.new(0, 0, 0, #config.Values * 28)
-   
+  
     local OptionsLayout = Instance.new("UIListLayout")
     OptionsLayout.Parent = OptionsScroll
     OptionsLayout.Padding = UDim.new(0, 2)
-   
+  
     local selectedValues = {}
     local isOpen = false
-   
+  
     for _, option in pairs(config.Values) do
         local OptionButton = Instance.new("TextButton")
         OptionButton.Parent = OptionsScroll
@@ -927,20 +927,20 @@ function Library:CreateMultiDropdown(tab, config)
         OptionButton.TextColor3 = Config.Colors.White
         OptionButton.TextSize = 10
         OptionButton.TextXAlignment = Enum.TextXAlignment.Left
-       
+      
         local OptCorner = Instance.new("UICorner")
         OptCorner.CornerRadius = UDim.new(0, 4)
         OptCorner.Parent = OptionButton
-       
+      
         local OptPadding = Instance.new("UIPadding")
         OptPadding.Parent = OptionButton
         OptPadding.PaddingLeft = UDim.new(0, 8)
-       
+      
         local isSelected = false
-       
+      
         OptionButton.MouseButton1Click:Connect(function(inputObject)
             isSelected = not isSelected
-           
+          
             if isSelected then
                 table.insert(selectedValues, option)
                 TweenService:Create(OptionButton, Config.Animations.Fast, {
@@ -957,15 +957,15 @@ function Library:CreateMultiDropdown(tab, config)
                     BackgroundColor3 = Config.Colors.Tertiary
                 }):Play()
             end
-           
+          
             local displayText = #selectedValues > 0 and table.concat(selectedValues, ", ") or "Select items..."
             ValueButton.Text = displayText
-           
+          
             if config.Callback then
                 config.Callback(selectedValues)
             end
         end)
-       
+      
         OptionButton.MouseEnter:Connect(function()
             if not isSelected then
                 TweenService:Create(OptionButton, Config.Animations.Fast, {
@@ -973,7 +973,7 @@ function Library:CreateMultiDropdown(tab, config)
                 }):Play()
             end
         end)
-       
+      
         OptionButton.MouseLeave:Connect(function()
             if not isSelected then
                 TweenService:Create(OptionButton, Config.Animations.Fast, {
@@ -982,10 +982,10 @@ function Library:CreateMultiDropdown(tab, config)
             end
         end)
     end
-   
+  
     ValueButton.MouseButton1Click:Connect(function()
         isOpen = not isOpen
-       
+      
         if isOpen then
             for i = #Library.OpenDropdowns, 1, -1 do
                 if Library.OpenDropdowns[i] ~= OptionsFrame then
@@ -993,25 +993,25 @@ function Library:CreateMultiDropdown(tab, config)
                     table.remove(Library.OpenDropdowns, i)
                 end
             end
-           
+          
             OptionsFrame.Visible = true
             Arrow.Text = "^"
             DropdownOverlay.Visible = true
             DropdownOverlay.ZIndex = 149
             OptionsFrame.ZIndex = 151
-           
+          
             local pos = ValueButton.AbsolutePosition
             local screenSize = ScreenGui.AbsoluteSize.Y
             local maxHeight = 150
             local availableSpaceBelow = screenSize - (pos.Y + ValueButton.AbsoluteSize.Y)
-           
+          
             local yPos
             if availableSpaceBelow >= maxHeight then
                 yPos = pos.Y + ValueButton.AbsoluteSize.Y + 5
             else
                 yPos = pos.Y - maxHeight - 5
             end
-           
+          
             OptionsFrame.Position = UDim2.new(0, pos.X, 0, yPos)
             OptionsFrame.Size = UDim2.new(0, ValueButton.AbsoluteSize.X, 0, 0)
             TweenService:Create(OptionsFrame, Config.Animations.Normal, {
@@ -1031,7 +1031,7 @@ function Library:CreateMultiDropdown(tab, config)
             end
         end
     end)
-   
+  
     table.insert(tab.Components, DropdownFrame)
     return {Frame = DropdownFrame, GetSelected = function() return selectedValues end}
 end
@@ -1043,16 +1043,16 @@ function Library:CreateSlider(tab, config)
     SliderFrame.BorderSizePixel = 0
     SliderFrame.Size = UDim2.new(1, 0, 0, 50)
     SliderFrame.LayoutOrder = #tab.Components + 1
-   
+  
     local SliderCorner = Instance.new("UICorner")
     SliderCorner.CornerRadius = UDim.new(0, 6)
     SliderCorner.Parent = SliderFrame
-   
+  
     local SliderStroke = Instance.new("UIStroke")
     SliderStroke.Color = Config.Colors.Border
     SliderStroke.Thickness = 1
     SliderStroke.Parent = SliderFrame
-   
+  
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Parent = SliderFrame
     TitleLabel.BackgroundTransparency = 1
@@ -1063,7 +1063,7 @@ function Library:CreateSlider(tab, config)
     TitleLabel.TextColor3 = Config.Colors.White
     TitleLabel.TextSize = 11
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     local ValueLabel = Instance.new("TextLabel")
     ValueLabel.Parent = SliderFrame
     ValueLabel.BackgroundTransparency = 1
@@ -1073,70 +1073,70 @@ function Library:CreateSlider(tab, config)
     ValueLabel.Text = tostring(config.Value.Default)
     ValueLabel.TextColor3 = Config.Colors.Purple
     ValueLabel.TextSize = 11
-   
+  
     local SliderTrack = Instance.new("Frame")
     SliderTrack.Parent = SliderFrame
     SliderTrack.BackgroundColor3 = Config.Colors.Secondary
     SliderTrack.BorderSizePixel = 0
     SliderTrack.Size = UDim2.new(1, -24, 0, 6)
     SliderTrack.Position = UDim2.new(0, 12, 1, -14)
-   
+  
     local TrackCorner = Instance.new("UICorner")
     TrackCorner.CornerRadius = UDim.new(1, 0)
     TrackCorner.Parent = SliderTrack
-   
+  
     local SliderFill = Instance.new("Frame")
     SliderFill.Parent = SliderTrack
     SliderFill.BackgroundColor3 = Config.Colors.Purple
     SliderFill.BorderSizePixel = 0
     SliderFill.Size = UDim2.new((config.Value.Default - config.Value.Min) / (config.Value.Max - config.Value.Min), 0, 1, 0)
-   
+  
     local FillCorner = Instance.new("UICorner")
     FillCorner.CornerRadius = UDim.new(1, 0)
     FillCorner.Parent = SliderFill
-   
+  
     local SliderButton = Instance.new("TextButton")
     SliderButton.Parent = SliderFrame
     SliderButton.BackgroundTransparency = 1
     SliderButton.Size = UDim2.new(1, 0, 1, 0)
     SliderButton.Text = ""
-   
+  
     local currentValue = config.Value.Default
     local dragging = false
-   
+  
     local function UpdateSlider(input)
         local relativeX = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
         currentValue = math.floor(config.Value.Min + (config.Value.Max - config.Value.Min) * relativeX / config.Step) * config.Step
-       
+      
         ValueLabel.Text = tostring(currentValue)
         TweenService:Create(SliderFill, Config.Animations.Fast, {
             Size = UDim2.new(relativeX, 0, 1, 0)
         }):Play()
-       
+      
         if config.Callback then
             config.Callback(currentValue)
         end
     end
-   
+  
     SliderButton.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             UpdateSlider(input)
         end
     end)
-   
+  
     UserInputService.InputChanged:Connect(function(input)
         if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
             UpdateSlider(input)
         end
     end)
-   
+  
     UserInputService.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = false
         end
     end)
-   
+  
     table.insert(tab.Components, SliderFrame)
     return {Frame = SliderFrame, SetValue = function(val) currentValue = val ValueLabel.Text = tostring(val) end}
 end
@@ -1148,16 +1148,16 @@ function Library:CreateInput(tab, config)
     InputFrame.BorderSizePixel = 0
     InputFrame.Size = UDim2.new(1, 0, 0, config.Desc and 70 or 60)
     InputFrame.LayoutOrder = #tab.Components + 1
-   
+  
     local InputCorner = Instance.new("UICorner")
     InputCorner.CornerRadius = UDim.new(0, 6)
     InputCorner.Parent = InputFrame
-   
+  
     local InputStroke = Instance.new("UIStroke")
     InputStroke.Color = Config.Colors.Border
     InputStroke.Thickness = 1
     InputStroke.Parent = InputFrame
-   
+  
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Parent = InputFrame
     TitleLabel.BackgroundTransparency = 1
@@ -1168,7 +1168,7 @@ function Library:CreateInput(tab, config)
     TitleLabel.TextColor3 = Config.Colors.White
     TitleLabel.TextSize = 11
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-   
+  
     if config.Desc then
         local DescLabel = Instance.new("TextLabel")
         DescLabel.Parent = InputFrame
@@ -1181,7 +1181,7 @@ function Library:CreateInput(tab, config)
         DescLabel.TextSize = 9
         DescLabel.TextXAlignment = Enum.TextXAlignment.Left
     end
-   
+  
     local TextBox = Instance.new("TextBox")
     TextBox.Parent = InputFrame
     TextBox.BackgroundColor3 = Config.Colors.Secondary
@@ -1196,37 +1196,37 @@ function Library:CreateInput(tab, config)
     TextBox.TextSize = 10
     TextBox.TextXAlignment = Enum.TextXAlignment.Left
     TextBox.ClearTextOnFocus = false
-   
+  
     local BoxCorner = Instance.new("UICorner")
     BoxCorner.CornerRadius = UDim.new(0, 4)
     BoxCorner.Parent = TextBox
-   
+  
     local BoxPadding = Instance.new("UIPadding")
     BoxPadding.Parent = TextBox
     BoxPadding.PaddingLeft = UDim.new(0, 8)
     BoxPadding.PaddingRight = UDim.new(0, 8)
-   
+  
     local BoxStroke = Instance.new("UIStroke")
     BoxStroke.Color = Config.Colors.Border
     BoxStroke.Thickness = 1
     BoxStroke.Parent = TextBox
-   
+  
     TextBox.Focused:Connect(function()
         TweenService:Create(BoxStroke, Config.Animations.Fast, {
             Color = Config.Colors.Purple
         }):Play()
     end)
-   
+  
     TextBox.FocusLost:Connect(function(enterPressed)
         TweenService:Create(BoxStroke, Config.Animations.Fast, {
             Color = Config.Colors.Border
         }):Play()
-       
+      
         if config.Callback and enterPressed then
             config.Callback(TextBox.Text)
         end
     end)
-   
+  
     table.insert(tab.Components, InputFrame)
     return {Frame = InputFrame, GetText = function() return TextBox.Text end}
 end
@@ -1238,11 +1238,11 @@ function Library:CreateLabel(tab, text)
     LabelFrame.BorderSizePixel = 0
     LabelFrame.Size = UDim2.new(1, 0, 0, 32)
     LabelFrame.LayoutOrder = #tab.Components + 1
-   
+  
     local LabelCorner = Instance.new("UICorner")
     LabelCorner.CornerRadius = UDim.new(0, 6)
     LabelCorner.Parent = LabelFrame
-   
+  
     local Label = Instance.new("TextLabel")
     Label.Parent = LabelFrame
     Label.BackgroundTransparency = 1
@@ -1253,14 +1253,14 @@ function Library:CreateLabel(tab, text)
     Label.TextColor3 = Config.Colors.Primary
     Label.TextSize = 12
     Label.TextXAlignment = Enum.TextXAlignment.Center
-   
+  
     table.insert(tab.Components, LabelFrame)
     return {Frame = LabelFrame, SetText = function(txt) Label.Text = txt end}
 end
 function Library:ToggleTransparency(state)
     Library.TransparencyEnabled = state
     local targetTransparency = state and 0.3 or 0
-   
+  
     TweenService:Create(MainFrame, Config.Animations.Normal, {
         BackgroundTransparency = targetTransparency
     }):Play()
@@ -1273,13 +1273,13 @@ function Library:ToggleTransparency(state)
     TweenService:Create(ContentContainer, Config.Animations.Normal, {
         BackgroundTransparency = targetTransparency
     }):Play()
-   
+  
     for _, tab in pairs(Library.Tabs) do
         TweenService:Create(tab.Button, Config.Animations.Normal, {
             BackgroundTransparency = targetTransparency
         }):Play()
     end
-   
+  
     for _, component in pairs(Library.CurrentTab.Components) do
         if component:IsA("Frame") then
             TweenService:Create(component, Config.Animations.Normal, {
@@ -1292,7 +1292,7 @@ function Library:SetToggleKey(keyCode)
     if Library.ToggleConnection then
         Library.ToggleConnection:Disconnect()
     end
-   
+  
     Library.ToggleConnection = UserInputService.InputBegan:Connect(function(input, gameProcessed)
         if not gameProcessed and input.KeyCode == keyCode then
             ScreenGui.Enabled = not ScreenGui.Enabled
@@ -1359,14 +1359,14 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and not gameProcessed then
         local mouse = game:GetService("Mouse")
         local mousePos = Vector2.new(mouse.X, mouse.Y)
-       
+      
         if #Library.OpenDropdowns > 0 then
             local clickedOnDropdown = false
             for _, dropdown in pairs(Library.OpenDropdowns) do
                 if dropdown and dropdown.Parent and dropdown.Visible then
                     local dropdownPos = dropdown.AbsolutePosition
                     local dropdownSize = dropdown.AbsoluteSize
-                   
+                  
                     if mousePos.X >= dropdownPos.X and mousePos.X <= dropdownPos.X + dropdownSize.X and
                        mousePos.Y >= dropdownPos.Y and mousePos.Y <= dropdownPos.Y + dropdownSize.Y then
                         clickedOnDropdown = true
@@ -1374,7 +1374,7 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
                     end
                 end
             end
-           
+          
             if not clickedOnDropdown then
                 CloseAllDropdowns()
             end
@@ -1387,30 +1387,30 @@ local function CreateConfirmDialog()
     ConfirmGui.Parent = PlayerGui
     ConfirmGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ConfirmGui.DisplayOrder = 300
-   
+  
     local Overlay = Instance.new("Frame")
     Overlay.Parent = ConfirmGui
     Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     Overlay.BackgroundTransparency = 1
     Overlay.Size = UDim2.new(1, 0, 1, 0)
     Overlay.BorderSizePixel = 0
-   
+  
     local ConfirmFrame = Instance.new("Frame")
     ConfirmFrame.Parent = ConfirmGui
     ConfirmFrame.BackgroundColor3 = Config.Colors.Secondary
     ConfirmFrame.BorderSizePixel = 0
     ConfirmFrame.Size = UDim2.new(0, 320, 0, 140)
     ConfirmFrame.Position = UDim2.new(0.5, -160, 0.5, -70)
-   
+  
     local ConfirmCorner = Instance.new("UICorner")
     ConfirmCorner.CornerRadius = UDim.new(0, 8)
     ConfirmCorner.Parent = ConfirmFrame
-   
+  
     local ConfirmStroke = Instance.new("UIStroke")
     ConfirmStroke.Color = Config.Colors.Red
     ConfirmStroke.Thickness = 2
     ConfirmStroke.Parent = ConfirmFrame
-   
+  
     local ConfirmTitle = Instance.new("TextLabel")
     ConfirmTitle.Parent = ConfirmFrame
     ConfirmTitle.BackgroundTransparency = 1
@@ -1420,7 +1420,7 @@ local function CreateConfirmDialog()
     ConfirmTitle.Text = "Confirm Close"
     ConfirmTitle.TextColor3 = Config.Colors.White
     ConfirmTitle.TextSize = 15
-   
+  
     local ConfirmText = Instance.new("TextLabel")
     ConfirmText.Parent = ConfirmFrame
     ConfirmText.BackgroundTransparency = 1
@@ -1431,13 +1431,13 @@ local function CreateConfirmDialog()
     ConfirmText.TextColor3 = Config.Colors.WhiteDim
     ConfirmText.TextSize = 11
     ConfirmText.TextWrapped = true
-   
+  
     local ButtonsFrame = Instance.new("Frame")
     ButtonsFrame.Parent = ConfirmFrame
     ButtonsFrame.BackgroundTransparency = 1
     ButtonsFrame.Size = UDim2.new(1, -24, 0, 35)
     ButtonsFrame.Position = UDim2.new(0, 12, 1, -45)
-   
+  
     local CancelButton = Instance.new("TextButton")
     CancelButton.Parent = ButtonsFrame
     CancelButton.BackgroundColor3 = Config.Colors.Tertiary
@@ -1447,11 +1447,11 @@ local function CreateConfirmDialog()
     CancelButton.Text = "Cancel"
     CancelButton.TextColor3 = Config.Colors.White
     CancelButton.TextSize = 12
-   
+  
     local CancelCorner = Instance.new("UICorner")
     CancelCorner.CornerRadius = UDim.new(0, 6)
     CancelCorner.Parent = CancelButton
-   
+  
     local ConfirmButton = Instance.new("TextButton")
     ConfirmButton.Parent = ButtonsFrame
     ConfirmButton.BackgroundColor3 = Config.Colors.Red
@@ -1462,33 +1462,35 @@ local function CreateConfirmDialog()
     ConfirmButton.Text = "Close Hub"
     ConfirmButton.TextColor3 = Config.Colors.White
     ConfirmButton.TextSize = 12
-   
+  
     local ConfirmBtnCorner = Instance.new("UICorner")
     ConfirmBtnCorner.CornerRadius = UDim.new(0, 6)
     ConfirmBtnCorner.Parent = ConfirmButton
-   
+  
     ConfirmFrame.Size = UDim2.new(0, 0, 0, 0)
     TweenService:Create(ConfirmFrame, Config.Animations.Bounce, {
         Size = UDim2.new(0, 320, 0, 140)
     }):Play()
-   
+  
     CancelButton.MouseButton1Click:Connect(function()
         ConfirmGui:Destroy()
     end)
-   
+  
     ConfirmButton.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
+        if ToggleScreenGui then
+            ToggleScreenGui:Destroy()
+        end
         ConfirmGui:Destroy()
-        FryzerToggleGUI:Destroy()
     end)
-   
+  
     CancelButton.MouseEnter:Connect(function()
         TweenService:Create(CancelButton, Config.Animations.Fast, {BackgroundColor3 = Config.Colors.Secondary}):Play()
     end)
     CancelButton.MouseLeave:Connect(function()
         TweenService:Create(CancelButton, Config.Animations.Fast, {BackgroundColor3 = Config.Colors.Tertiary}):Play()
     end)
-   
+  
     ConfirmButton.MouseEnter:Connect(function()
         TweenService:Create(ConfirmButton, Config.Animations.Fast, {BackgroundColor3 = Color3.fromRGB(255, 50, 50)}):Play()
     end)
@@ -1506,13 +1508,11 @@ TweenService:Create(MainFrame, Config.Animations.Bounce, {
     Position = UDim2.new(0.5, -260, 0.5, -180)
 }):Play()
 
-
 -- Floating Toggle Circle Integration
 -- Remove existing FryzerToggleGUI if it exists
 if PlayerGui:FindFirstChild("FryzerToggleGUI") then
     PlayerGui:FindFirstChild("FryzerToggleGUI"):Destroy()
 end
-
 -- Toggle Circle Configuration (using existing Config where possible)
 local ToggleConfig = {
     CircleSize = 60, -- Size of the circle
@@ -1525,10 +1525,9 @@ local ToggleConfig = {
     },
     Position = {
         X = 100, -- Default X position
-        Y = 200  -- Default Y position
+        Y = 200 -- Default Y position
     }
 }
-
 -- Create Toggle ScreenGui (separate from main for independence)
 local ToggleScreenGui = Instance.new("ScreenGui")
 ToggleScreenGui.Name = "FryzerToggleGUI"
@@ -1536,7 +1535,6 @@ ToggleScreenGui.Parent = PlayerGui
 ToggleScreenGui.ResetOnSpawn = false
 ToggleScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ToggleScreenGui.DisplayOrder = 999 -- High display order to stay on top
-
 -- Create Shadow Frame (for drop shadow effect)
 local ShadowFrame = Instance.new("Frame")
 ShadowFrame.Name = "ShadowFrame"
@@ -1547,12 +1545,10 @@ ShadowFrame.BorderSizePixel = 0
 ShadowFrame.Position = UDim2.new(0, ToggleConfig.Position.X + 3, 0, ToggleConfig.Position.Y + 3)
 ShadowFrame.Size = UDim2.new(0, ToggleConfig.CircleSize, 0, ToggleConfig.CircleSize)
 ShadowFrame.ZIndex = 1
-
 -- Make shadow circular
 local ShadowCorner = Instance.new("UICorner")
 ShadowCorner.CornerRadius = UDim.new(0.5, 0)
 ShadowCorner.Parent = ShadowFrame
-
 -- Create Main Circle Frame
 local CircleFrame = Instance.new("Frame")
 CircleFrame.Name = "CircleFrame"
@@ -1563,12 +1559,10 @@ CircleFrame.BorderColor3 = ToggleConfig.Colors.Border
 CircleFrame.Position = UDim2.new(0, ToggleConfig.Position.X, 0, ToggleConfig.Position.Y)
 CircleFrame.Size = UDim2.new(0, ToggleConfig.CircleSize, 0, ToggleConfig.CircleSize)
 CircleFrame.ZIndex = 2
-
 -- Make frame circular
 local CircleCorner = Instance.new("UICorner")
 CircleCorner.CornerRadius = UDim.new(0.5, 0)
 CircleCorner.Parent = CircleFrame
-
 -- Add gradient effect
 local Gradient = Instance.new("UIGradient")
 Gradient.Color = ColorSequence.new{
@@ -1577,7 +1571,6 @@ Gradient.Color = ColorSequence.new{
 }
 Gradient.Rotation = 45
 Gradient.Parent = CircleFrame
-
 -- Create Button (invisible but covers the circle)
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Name = "ToggleButton"
@@ -1586,7 +1579,6 @@ ToggleButton.BackgroundTransparency = 1
 ToggleButton.Size = UDim2.new(1, 0, 1, 0)
 ToggleButton.Text = ""
 ToggleButton.ZIndex = 4
-
 -- Create Text Label
 local TextLabel = Instance.new("TextLabel")
 TextLabel.Name = "TextLabel"
@@ -1599,18 +1591,15 @@ TextLabel.TextColor3 = ToggleConfig.Colors.Text
 TextLabel.TextSize = 12
 TextLabel.TextScaled = true
 TextLabel.ZIndex = 3
-
 -- Add text size constraint
 local TextSizeConstraint = Instance.new("UITextSizeConstraint")
 TextSizeConstraint.MaxTextSize = 12
 TextSizeConstraint.MinTextSize = 8
 TextSizeConstraint.Parent = TextLabel
-
 -- Variables for dragging
 local circleDragging = false
 local dragStart = nil
 local startPos = nil
-
 -- Mobile and PC drag support
 local function InputBegan(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -1619,75 +1608,68 @@ local function InputBegan(input)
         startPos = CircleFrame.Position
     end
 end
-
 local function InputChanged(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
         if circleDragging then
             local delta = input.Position - dragStart
             local newPosition = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-            
+           
             -- Keep within screen bounds
             local screenSize = workspace.CurrentCamera.ViewportSize
             local x = math.clamp(newPosition.X.Offset, 0, screenSize.X - ToggleConfig.CircleSize)
             local y = math.clamp(newPosition.Y.Offset, GuiService:GetGuiInset().Y, screenSize.Y - ToggleConfig.CircleSize)
-            
+           
             CircleFrame.Position = UDim2.new(0, x, 0, y)
             ShadowFrame.Position = UDim2.new(0, x + 3, 0, y + 3)
         end
     end
 end
-
 local function InputEnded(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         circleDragging = false
     end
 end
-
 -- Connect drag events
 ToggleButton.InputBegan:Connect(InputBegan)
 UserInputService.InputChanged:Connect(InputChanged)
 UserInputService.InputEnded:Connect(InputEnded)
-
 -- Hover/Touch effects
 ToggleButton.MouseEnter:Connect(function()
     TweenService:Create(CircleFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
         Size = UDim2.new(0, ToggleConfig.CircleSize + 5, 0, ToggleConfig.CircleSize + 5),
         BorderColor3 = ToggleConfig.Colors.Accent
     }):Play()
-    
+   
     TweenService:Create(ShadowFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
         Size = UDim2.new(0, ToggleConfig.CircleSize + 5, 0, ToggleConfig.CircleSize + 5),
         BackgroundTransparency = 0.5
     }):Play()
-    
+   
     TweenService:Create(TextLabel, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
         TextColor3 = ToggleConfig.Colors.Accent
     }):Play()
 end)
-
 ToggleButton.MouseLeave:Connect(function()
     TweenService:Create(CircleFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
         Size = UDim2.new(0, ToggleConfig.CircleSize, 0, ToggleConfig.CircleSize),
         BorderColor3 = ToggleConfig.Colors.Border
     }):Play()
-    
+   
     TweenService:Create(ShadowFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
         Size = UDim2.new(0, ToggleConfig.CircleSize, 0, ToggleConfig.CircleSize),
         BackgroundTransparency = 0.7
     }):Play()
-    
+   
     TweenService:Create(TextLabel, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
         TextColor3 = ToggleConfig.Colors.Text
     }):Play()
 end)
-
 -- Toggle functionality for FryzerModernHub
 local isHubVisible = ScreenGui.Enabled
-
 local function ToggleModernHub()
     isHubVisible = not isHubVisible
     ScreenGui.Enabled = isHubVisible
-    
+   
     -- Visual feedback
     if isHubVisible then
         -- Hub is now visible - change circle to accent color
@@ -1695,11 +1677,11 @@ local function ToggleModernHub()
             BackgroundColor3 = ToggleConfig.Colors.Accent,
             BorderColor3 = Color3.fromRGB(120, 130, 255)
         }):Play()
-        
+       
         TweenService:Create(TextLabel, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
             TextColor3 = Color3.fromRGB(255, 255, 255)
         }):Play()
-        
+       
         -- Update gradient for active state
         Gradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0.0, Color3.fromRGB(100, 110, 255)),
@@ -1711,23 +1693,23 @@ local function ToggleModernHub()
             BackgroundColor3 = ToggleConfig.Colors.Background,
             BorderColor3 = ToggleConfig.Colors.Border
         }):Play()
-        
+       
         TweenService:Create(TextLabel, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
             TextColor3 = ToggleConfig.Colors.Text
         }):Play()
-        
+       
         -- Return gradient to normal
         Gradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0.0, Color3.fromRGB(30, 30, 30)),
             ColorSequenceKeypoint.new(1.0, Color3.fromRGB(15, 15, 15))
         }
     end
-    
+   
     -- Click animation
     local clickTween = TweenService:Create(CircleFrame, TweenInfo.new(0.1, Enum.EasingStyle.Quad), {
         Size = UDim2.new(0, ToggleConfig.CircleSize - 5, 0, ToggleConfig.CircleSize - 5)
     })
-    
+   
     clickTween:Play()
     clickTween.Completed:Connect(function()
         TweenService:Create(CircleFrame, TweenInfo.new(0.2, Enum.EasingStyle.Back), {
@@ -1735,21 +1717,18 @@ local function ToggleModernHub()
         }):Play()
     end)
 end
-
 -- Click/Touch event for toggling
 ToggleButton.MouseButton1Click:Connect(function()
     if not circleDragging then -- Only toggle if not dragging
         ToggleModernHub()
     end
 end)
-
 -- Touch support for mobile
 ToggleButton.TouchTap:Connect(function()
     if not circleDragging then -- Only toggle if not dragging
         ToggleModernHub()
     end
 end)
-
 -- Initialize - set initial state based on main GUI
 isHubVisible = ScreenGui.Enabled
 if isHubVisible then
@@ -1762,23 +1741,20 @@ if isHubVisible then
         ColorSequenceKeypoint.new(1.0, Color3.fromRGB(70, 85, 220))
     }
 end
-
 -- Prevent dragging from triggering toggle
 local dragThreshold = 5
 local startDragPos = nil
-
 ToggleButton.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         startDragPos = input.Position
     end
 end)
-
 UserInputService.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         if startDragPos then
             local currentPos = UserInputService:GetMouseLocation()
             local distance = (currentPos - startDragPos).Magnitude
-            
+           
             -- If moved less than threshold, consider it a click
             if distance < dragThreshold and not circleDragging then
                 ToggleModernHub()
@@ -1788,6 +1764,5 @@ UserInputService.InputEnded:Connect(function(input)
         startDragPos = nil
     end
 end)
-
 print("Floating toggle circle loaded! Click/drag the circle to toggle the hub.")
 return Library
